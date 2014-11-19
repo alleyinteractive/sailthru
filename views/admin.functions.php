@@ -486,10 +486,10 @@ function sailthru_intialize_concierge_options() {
 	} // End if.
 
 	add_settings_section(
-		'sailthru_concierge_settings_section',                        // ID used to identify this section and with which to register options
-		__( 'Sailthru Concierge Options', 'sailthru-for-wordpress' ), // Title to be displayed on the administration page
-		'sailthru_concierge_options_callback',                        // Callback used to render the description of the section
-		'sailthru_concierge_options'                                  // Page on which to add this section of options
+		'sailthru_concierge_settings_section',                        // ID used to identify this section and with which to register options.
+		__( 'Sailthru Concierge Options', 'sailthru-for-wordpress' ), // Title to be displayed on the administration page.
+		'sailthru_concierge_options_callback',                        // Callback used to render the description of the section.
+		'sailthru_concierge_options'                                  // Page on which to add this section of options.
 	);
 
 	add_settings_field(
@@ -508,7 +508,7 @@ function sailthru_intialize_concierge_options() {
 	);
 
 	/*
-	 * If Conceirge is not on, let's not show all the options
+	 * If Conceirge is not on, let's not show all the options.
 	 */
 	$concierge = get_option( 'sailthru_concierge_options' );
 
@@ -570,7 +570,6 @@ function sailthru_intialize_concierge_options() {
 			)
 		);
 
-
 		add_settings_field(
 			'sailthru_concierge_cssPath',
 			__( 'Custom CSS path to decorate recommendation box', 'sailthru-for-wordpress' ),
@@ -584,7 +583,6 @@ function sailthru_intialize_concierge_options() {
 				'sailthru_concierge_cssPath',
 			)
 		);
-
 
 		add_settings_field(
 			'sailthru_concierge_filter',
@@ -706,7 +704,7 @@ function sailthru_intialize_scout_options() {
 			)
 		);
 
-	} // End if concierge is on.
+	} // End if scout is on.
 
 	register_setting(
 		'sailthru_scout_options',
@@ -714,7 +712,7 @@ function sailthru_intialize_scout_options() {
 		'sailthru_sanitize_text_input'
 	);
 
-} // End sailthru_intialize_concierge_options.
+} // End sailthru_intialize_scout_options.
 add_action( 'admin_init', 'sailthru_intialize_scout_options' );
 
 // End sailthru_intialize_forms_options.
