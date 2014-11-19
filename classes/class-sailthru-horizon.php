@@ -31,11 +31,11 @@ class Sailthru_Horizon {
 		add_action( 'admin_menu', array( $this, 'sailthru_menu') );
 
 		// Register the Horizon meta tags.
-	    add_action( 'wp_head', array( $this, 'sailthru_horizon_meta_tags' ) );
+		add_action( 'wp_head', array( $this, 'sailthru_horizon_meta_tags' ) );
 
-	 	// Setup the meta box hooks.
-	 	add_action( 'add_meta_boxes', array( $this, 'sailthru_post_metabox' ) );
-	 	add_action( 'save_post', array( $this, 'save_custom_meta_data' ) );
+		// Setup the meta box hooks.
+		add_action( 'add_meta_boxes', array( $this, 'sailthru_post_metabox' ) );
+		add_action( 'save_post', array( $this, 'save_custom_meta_data' ) );
 
 	} // End constructor.
 
@@ -49,25 +49,25 @@ class Sailthru_Horizon {
 	public function activate( $network_wide ) {
 
 		if ( ! current_user_can( 'activate_plugins' ) ) {
-            return;
-        }
+			return;
+		}
 
-	} // End activate
+	} // End activate.
 
 	/**
 	 * Fired when the plugin is deactivated.
 	 *
 	 * @param	boolean	$network_wide	True if WPMU superadmin
 	 * 			uses "Network Activate" action, false if WPMU is
-	 * 			disabled or plugin is activated on an individual blog
+	 * 			disabled or plugin is activated on an individual blog.
 	 */
 	public function deactivate( $network_wide ) {
 
 		if ( ! current_user_can( 'activate_plugins' ) ) {
-            return;
-        }
+			return;
+		}
 
-		// stop overriding Wordpress's built in email functions
+		// Stop overriding Wordpress's built in email functions.
 		if ( false != get_option( 'sailthru_override_wp_mail' ) ) {
 			delete_option( 'sailthru_override_wp_mail' );
 		}
@@ -107,7 +107,7 @@ class Sailthru_Horizon {
 	 *
 	 * @param	boolean	$network_wide	True if WPMU superadmin
 	 * 			uses "Network Activate" action, false if WPMU is
-	 * 			disabled or plugin is activated on an individual blog
+	 * 			disabled or plugin is activated on an individual blog.
 	 */
 	public function uninstall( $network_wide ) {
 
@@ -117,15 +117,15 @@ class Sailthru_Horizon {
 
 	public function sailthru_init() {
 
-	 	//Loads the plugin text domain for translation.
+		// Loads the plugin text domain for translation.
 		$domain = 'sailthru-for-wordpress-locale';
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-        load_textdomain( $domain, SAILTHRU_PLUGIN_PATH . $domain . '-' . $locale . '.mo' );
-        load_plugin_textdomain( $domain, FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
+		load_textdomain( $domain, SAILTHRU_PLUGIN_PATH . $domain . '-' . $locale . '.mo' );
+		load_plugin_textdomain( $domain, FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
 
-        // Add a thumbnail size for concierge.
-        add_theme_support( 'post-thumbnails' );
-        add_image_size( 'concierge-thumb', 50, 50 );
+		// Add a thumbnail size for concierge.
+		add_theme_support( 'post-thumbnails' );
+		add_image_size( 'concierge-thumb', 50, 50 );
 
 	} // End plugin_textdomain
 
@@ -204,55 +204,55 @@ class Sailthru_Horizon {
 
 
 	/**
-	 * Create the Horizon Script for the <strike>page footer</strike>  page body.
+	 * Create the Horizon Script for the <strike>page footer</strike> page body.
 	 */
 	 function sailthru_client_horizon() {
 
-	 	// Get the client's horizon domain.
-	 	$options        = get_option( 'sailthru_setup_options' );
-	 	$concierge      = get_option( 'sailthru_concierge_options' );
-	 	$concierge_from = isset( $concierge['sailthru_concierge_from'] ) ? $concierge['sailthru_concierge_from'] : 'bottom';
+		// Get the client's horizon domain.
+		$options        = get_option( 'sailthru_setup_options' );
+		$concierge      = get_option( 'sailthru_concierge_options' );
+		$concierge_from = isset( $concierge['sailthru_concierge_from'] ) ? $concierge['sailthru_concierge_from'] : 'bottom';
 
- 		// Threshold.
- 		if ( ! isset( $concierge['sailthru_concierge_threshold'] ) ) {
- 			$concierge_threshold = 'threshold: 500,';
- 		} else {
- 			$concierge_threshold =  strlen( $concierge['sailthru_concierge_threshold'] ) ? "threshhold: " . intval( $concierge['sailthru_concierge_threshold'] ) . ",": 'threshold: 500,';
- 		}
+		// Threshold.
+		if ( ! isset( $concierge['sailthru_concierge_threshold'] ) ) {
+			$concierge_threshold = 'threshold: 500,';
+		} else {
+			$concierge_threshold =  strlen( $concierge['sailthru_concierge_threshold'] ) ? "threshhold: " . intval( $concierge['sailthru_concierge_threshold'] ) . ",": 'threshold: 500,';
+		}
 
- 		// Delay.
- 		$concierge_delay = isset( $concierge['sailthru_concierge_delay'] ) ? $concierge['sailthru_concierge_delay'] : '500';
+		// Delay.
+		$concierge_delay = isset( $concierge['sailthru_concierge_delay'] ) ? $concierge['sailthru_concierge_delay'] : '500';
 
- 		// Offset.
- 		$concierge_offset = isset( $concierge['sailthru_concierge_offsetBottom'] ) ? $concierge['sailthru_concierge_offsetBottom'] : '20';
+		// Offset.
+		$concierge_offset = isset( $concierge['sailthru_concierge_offsetBottom'] ) ? $concierge['sailthru_concierge_offsetBottom'] : '20';
 
- 		// CssPath.
- 		if ( ! isset( $concierge['sailthru_concierge_cssPath'] ) ) {
- 			$concierge_css = 'https://ak.sail-horizon.com/horizon/recommendation.css';
- 		} else {
+		// CssPath.
+		if ( ! isset( $concierge['sailthru_concierge_cssPath'] ) ) {
+			$concierge_css = 'https://ak.sail-horizon.com/horizon/recommendation.css';
+		} else {
 			$concierge_css = strlen( $concierge['sailthru_concierge_cssPath'] ) > 0 ? $concierge['sailthru_concierge_cssPath'] : 'https://ak.sail-horizon.com/horizon/recommendation.css';
- 		}
+		}
 
- 		// Filter.
- 		if ( ! isset( $concierge['sailthru_concierge_filter'] ) ) {
- 			$concierge_filter = '';
- 		} else {
- 			//Remove whitespace around the commas.
- 			$tags_filtered    = preg_replace( "/\s*([\,])\s*/", "$1", $concierge['sailthru_concierge_filter'] );
- 			$concierge_filter = strlen( $concierge['sailthru_concierge_filter'] ) >  0 ? "filter: {tags: '" . esc_js( $tags_filtered ) . "'}" : '';
- 		}
+		// Filter.
+		if ( ! isset( $concierge['sailthru_concierge_filter'] ) ) {
+			$concierge_filter = '';
+		} else {
+			// Remove whitespace around the commas.
+			$tags_filtered    = preg_replace( "/\s*([\,])\s*/", "$1", $concierge['sailthru_concierge_filter'] );
+			$concierge_filter = strlen( $concierge['sailthru_concierge_filter'] ) >  0 ? "filter: {tags: '" . esc_js( $tags_filtered ) . "'}" : '';
+		}
 
 
-	 	// Check if concierge is on.
-	 	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 ) {
-	 		$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
-	 			from: '" . esc_js( $concierge_from ) . "',
-	 			" . esc_js( $concierge_threshold ) . "
-	 			delay: " . esc_js( $concierge_delay ) . ",
-	 			offsetBottom: " . esc_js( $concierge_offset ) . ",
-	 			cssPath: '" . esc_js( $concierge_css ) . "',
-	 			$concierge_filter
-	 		}";
+		// Check if concierge is on.
+		if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 ) {
+			$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
+				from: '" . esc_js( $concierge_from ) . "',
+				" . esc_js( $concierge_threshold ) . "
+				delay: " . esc_js( $concierge_delay ) . ",
+				offsetBottom: " . esc_js( $concierge_offset ) . ",
+				cssPath: '" . esc_js( $concierge_css ) . "',
+				$concierge_filter
+			}";
 		} else {
 			$horizon_params = "domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "'";
 		}
@@ -314,12 +314,12 @@ class Sailthru_Horizon {
 	function sailthru_menu() {
 
 		$sailthru_menu = add_menu_page(
-			'Sailthru',											// The value used to populate the browser's title bar when the menu page is active
-			__( 'Sailthru', 'sailthru-for-wordpress' ),			// The text of the menu in the administrator's sidebar
-			'manage_options',									// What roles are able to access the menu
-			'sailthru_configuration_page',						// The ID used to bind submenu items to this menu
-			array( &$this, 'load_sailthru_admin_display' ),		// The callback function used to render this menu
-			SAILTHRU_PLUGIN_URL . 'img/sailthru-menu-icon.png' 	// The icon to represent the menu item
+			'Sailthru',                                        // The value used to populate the browser's title bar when the menu page is active.
+			__( 'Sailthru', 'sailthru-for-wordpress' ),        // The text of the menu in the administrator's sidebar.
+			'manage_options',                                  // What roles are able to access the menu.
+			'sailthru_configuration_page',                     // The ID used to bind submenu items to this menu.
+			array( &$this, 'load_sailthru_admin_display' ),    // The callback function used to render this menu.
+			SAILTHRU_PLUGIN_URL . 'img/sailthru-menu-icon.png' // The icon to represent the menu item.
 		);
 		$this->admin_views[ $sailthru_menu ] = 'sailthru_configuration_page';
 
@@ -344,12 +344,12 @@ class Sailthru_Horizon {
 		$this->admin_views[ $settings_menu ] = 'settings_configuration_page';
 
 		$concierge_menu = add_submenu_page(
-			'sailthru_configuration_page',							// The ID of the top-level menu page to which this submenu item belongs
-			__( 'Concierge Options', 'sailthru-for-wordpress' ),	// The value used to populate the browser's title bar when the menu page is active
-			__( 'Concierge Options', 'sailthru-for-wordpress' ),	// The label of this submenu item displayed in the menu
-			'manage_options',										// What roles are able to access this submenu item
-			'concierge_configuration_page',							// The ID used to represent this submenu item
-			array( &$this, 'load_sailthru_admin_display' )			// The callback function used to render the options for this submenu item
+			'sailthru_configuration_page',                       // The ID of the top-level menu page to which this submenu item belongs.
+			__( 'Concierge Options', 'sailthru-for-wordpress' ), // The value used to populate the browser's title bar when the menu page is active.
+			__( 'Concierge Options', 'sailthru-for-wordpress' ), // The label of this submenu item displayed in the menu.
+			'manage_options',                                    // What roles are able to access this submenu item.
+			'concierge_configuration_page',                      // The ID used to represent this submenu item.
+			array( &$this, 'load_sailthru_admin_display' )       // The callback function used to render the options for this submenu item.
 		);
 		$this->admin_views[ $concierge_menu ] = 'concierge_configuration_page';
 
@@ -397,7 +397,7 @@ class Sailthru_Horizon {
 	} // End sailthru_admin_display.
 
 	/**
- 	 * Renders Horizon specific meta tags in the <head></head>.
+	 * Renders Horizon specific meta tags in the <head></head>.
 	 */
 	function sailthru_horizon_meta_tags() {
 
@@ -413,8 +413,8 @@ class Sailthru_Horizon {
 
 		global $post;
 
-    	$post_object  = get_post();
-    	$horizon_tags = array();
+		$post_object  = get_post();
+		$horizon_tags = array();
 
 		// Date.
 		$post_date = get_the_date( 'Y-m-d H:i:s' );
@@ -455,11 +455,11 @@ class Sailthru_Horizon {
 			$image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
 			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'concierge-thumb' );
 
-    		$post_image = $image[0];
-    		$horizon_tags['sailthru.image.full'] = esc_attr( $post_image );
+			$post_image = $image[0];
+			$horizon_tags['sailthru.image.full'] = esc_attr( $post_image );
 
-    		$post_thumbnail = $thumb[0];
-    		$horizon_tags['sailthru.image.thumb'] = $post_thumbnail;
+			$post_thumbnail = $thumb[0];
+			$horizon_tags['sailthru.image.thumb'] = $post_thumbnail;
 		}
 
 		// Expiration date.
@@ -481,7 +481,7 @@ class Sailthru_Horizon {
 		}
 		$tag_output .= "<!-- END Sailthru Horizon Meta Information -->\n\n";
 
-    	echo $tag_output;
+		echo $tag_output;
 
 	} // Sailthru_horizon_meta_tags.
 
@@ -494,7 +494,7 @@ class Sailthru_Horizon {
 	 * Credit: http://www.wprecipes.com/wordpress-improved-the_excerpt-function.
 	 */
 	function reverse_strrchr( $haystack, $needle, $trail ) {
-	    return strrpos( $haystack, $needle ) ? substr( $haystack, 0, strrpos( $haystack, $needle ) + $trail ) : false;
+		return strrpos( $haystack, $needle ) ? substr( $haystack, 0, strrpos( $haystack, $needle ) + $trail ) : false;
 	}
 
 	/*--------------------------------------------*
@@ -573,12 +573,12 @@ class Sailthru_Horizon {
 	 */
 	function user_can_save( $post_id, $nonce ) {
 
-	    $is_autosave    = wp_is_post_autosave( $post_id );
-	    $is_revision    = wp_is_post_revision( $post_id );
-	    $is_valid_nonce = ( isset( $_POST[ $nonce ] ) && wp_verify_nonce( $_POST[ $nonce ], plugin_basename( __FILE__ ) ) );
+		$is_autosave    = wp_is_post_autosave( $post_id );
+		$is_revision    = wp_is_post_revision( $post_id );
+		$is_valid_nonce = ( isset( $_POST[ $nonce ] ) && wp_verify_nonce( $_POST[ $nonce ], plugin_basename( __FILE__ ) ) );
 
-	    // Return true if the user is able to save; otherwise, false.
-	    return ! ( $is_autosave || $is_revision ) && $is_valid_nonce;
+		// Return true if the user is able to save; otherwise, false.
+		return ! ( $is_autosave || $is_revision ) && $is_valid_nonce;
 
 	} // End user_can_save.
 
