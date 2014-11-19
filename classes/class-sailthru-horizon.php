@@ -208,6 +208,11 @@ class Sailthru_Horizon {
 	 */
 	 function sailthru_client_horizon() {
 
+	 	// Is horizon turned off?
+	 	if ( ! apply_filters( 'sailthru_horizon_on', true ) ) {
+	 		return;
+	 	}
+
 		// Get the client's horizon domain.
 		$options        = get_option( 'sailthru_setup_options' );
 		$concierge      = get_option( 'sailthru_concierge_options' );
@@ -243,39 +248,23 @@ class Sailthru_Horizon {
  		}
 
  		// Setup our concierge output values.
- 		$with_concierge = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
- 			from: '" . esc_js( $concierge_from ) . "',
- 			" . esc_js( $concierge_threshold ) . "
- 			delay: " . esc_js( $concierge_delay ) . ",
- 			offsetBottom: " . esc_js( $concierge_offset ) . ",
- 			cssPath: '" . esc_js( $concierge_css ) . "',
- 			$concierge_filter
- 		}";
-		$without_concierge = "domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "'";
 
 	 	// Check if concierge is on.
-	 	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 ) {
-			$horizon_params = $with_concierge;
-
-			// Check for post type restrictions.
-			if ( ! empty( $concierge['sailthru_concierge_restrict_types'] ) ) {
-	 			$types = explode( ',', $concierge['sailthru_concierge_restrict_types'] );
-	 			$types = array_map( 'trim', $types );
-	 			apply_filters( 'sailthru_concierge_restrict_types', $types );
-
-	 			if ( in_array( get_post_type(), $types ) ) {
-	 				$horizon_params = $with_concierge;
-	 			} else {
-	 				$horizon_params = $without_concierge;
-	 			}
-	 		}
-
+	 	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 && apply_filters( 'sailthru_concierge_on', true ) ) {
+	 		$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
+	 			from: '" . esc_js( $concierge_from ) . "',
+	 			" . esc_js( $concierge_threshold ) . "
+	 			delay: " . esc_js( $concierge_delay ) . ",
+	 			offsetBottom: " . esc_js( $concierge_offset ) . ",
+	 			cssPath: '" . esc_js( $concierge_css ) . "',
+	 			$concierge_filter
+	 		}";
 		} else {
-			$horizon_params = $without_concierge;
+			$horizon_params = "domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "'";
 		}
 
 		if ( $options['sailthru_horizon_load_type'] == '1') {
-			$horizon_js =  "<!-- Sailthru Horizon Sync -->\n";
+			$horizon_js  = "<!-- Sailthru Horizon Sync -->\n";
 			$horizon_js .= "<script type=\"text/javascript\" src=\"//ak.sail-horizon.com/horizon/v1.js\"></script>\n";
 			$horizon_js .= "<script type=\"text/javascript\">\n";
 			$horizon_js .= "jQuery(function() { \n";

@@ -585,20 +585,6 @@ function sailthru_intialize_concierge_options() {
 		);
 
 		add_settings_field(
-			'sailthru_concierge_restrict_types',
-			__( 'Restrict Concierge to show on only these post types, pass comma separated tags', 'sailthru-for-wordpress' ),
-			'sailthru_html_text_input_callback',
-			'sailthru_concierge_options',
-			'sailthru_concierge_settings_section',
-			array(
-				'sailthru_concierge_options',
-				'sailthru_concierge_restrict_types',
-				'',
-				'sailthru_concierge_restrict_types',
-			)
-		);
-
-		add_settings_field(
 			'sailthru_concierge_filter',
 			__( 'To only return content tagged a certain way, pass comma separated tags', 'sailthru-for-wordpress' ),
 			'sailthru_html_text_input_callback',
