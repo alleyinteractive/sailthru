@@ -238,3 +238,15 @@ class Sailthru_Scout_Widget extends WP_Widget {
 } // End class.
 
 add_action( 'widgets_init', create_function( '', 'register_widget( "Sailthru_Scout_Widget" );' ) );
+
+/**
+ * Template tag for manual placement of Scout
+ *
+ * @return string Scout element
+ */
+function sailthru_show_scout() {
+	$scout = get_option( 'sailthru_scout_options' );
+    if ( isset( $scout['sailthru_scout_is_on'] ) && $scout['sailthru_scout_is_on'] ) {
+        echo '<div id="sailthru-scout"><div class="loading">' . esc_html( __( 'Loading, please wait...', 'sailthru-for-wordpress' ) ) . '</div></div>';
+    }
+}
