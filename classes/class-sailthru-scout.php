@@ -104,9 +104,16 @@ class Sailthru_Scout_Widget extends WP_Widget {
 		}
 
 		// numVisible?
-		if ( isset( $scout['sailthru_scout_numVisible'] ) && strlen( $scout['sailthru_scout_numVisible'] ) > 0  ) {
-			$scout_params[] = "numVisible: " . (int) $scout['sailthru_scout_numVisible'];
+		$num_visible = 10;
+		if ( isset( $scout['sailthru_scout_numVisible'] ) ) {
+			$num_visible = $scout['sailthru_scout_numVisible'];
 		}
+		/**
+		 * Filter the Sailthru Scout number of visible articles.
+		 *
+		 * @param string|int $num_visible Number of visible articles.
+		 */
+		$scout_params[] = "numVisible: " . (int) apply_filters( 'sailthru_scout_num_visible', $num_visible );
 
 		// pageView?
 		/** This filter is documented in class-sailthru-horizon.php */

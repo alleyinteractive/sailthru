@@ -253,6 +253,13 @@ class Sailthru_Horizon {
  			$concierge_filter = strlen( $concierge['sailthru_concierge_filter'] ) >  0 ? "filter: {tags: '" . esc_js( $tags_filtered ) . "'}" : '';
  		}
 
+ 		/**
+		 * Filter the Sailthru spider option.
+		 *
+		 * @param string $status True if page should be spidered.
+		 */
+ 		$spider = apply_filters( 'sailthru_horizon_spider', true ) ? 'true' : 'false';
+
  		// Setup our concierge output values.
 
 	 	// Check if concierge is on.
@@ -263,14 +270,17 @@ class Sailthru_Horizon {
 		 * @param bool $status True if Concierge is turned on.
 		 */
 	 	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 && apply_filters( 'sailthru_concierge_on', true ) ) {
-	 		$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
-	 			from: '" . esc_js( $concierge_from ) . "',
-	 			" . esc_js( $concierge_threshold ) . "
-	 			delay: " . esc_js( $concierge_delay ) . ",
-	 			offsetBottom: " . esc_js( $concierge_offset ) . ",
-	 			cssPath: '" . esc_js( $concierge_css ) . "',
-	 			$concierge_filter
-	 		}";
+	 		$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',
+	 			spider: '" . esc_js( $spider ) . "',
+	 			concierge: {
+	 				from: '" . esc_js( $concierge_from ) . "',
+	 				" . esc_js( $concierge_threshold ) . "
+	 				delay: " . esc_js( $concierge_delay ) . ",
+	 				offsetBottom: " . esc_js( $concierge_offset ) . ",
+	 				cssPath: '" . esc_js( $concierge_css ) . "',
+	 				$concierge_filter
+	 			}
+	 		";
 		} else {
 			$horizon_params = "domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "'";
 		}
@@ -280,11 +290,11 @@ class Sailthru_Horizon {
 			$horizon_js .= "<script type=\"text/javascript\" src=\"//ak.sail-horizon.com/horizon/v1.js\"></script>\n";
 			$horizon_js .= "<script type=\"text/javascript\">\n";
 			$horizon_js .= "jQuery(function() { \n";
-			$horizon_js .= "  if (window.Sailthru) {\n";
-			$horizon_js .= "           Sailthru.setup({\n";
-			$horizon_js .= "              " . $horizon_params . "\n";
+			$horizon_js .= "    if (window.Sailthru) {\n";
+			$horizon_js .= "         Sailthru.setup({\n";
+			$horizon_js .= "             " . $horizon_params . "\n";
 			$horizon_js .= "         });\n";
-			$horizon_js .= "  }\n";
+			$horizon_js .= "    }\n";
 			$horizon_js .= "});\n";
 			$horizon_js .= " </script>\n";
 		} else {
