@@ -512,7 +512,8 @@ function sailthru_intialize_concierge_options() {
 	 */
 	$concierge = get_option( 'sailthru_concierge_options' );
 
-	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] ) {
+	/** This filter is documented in class-sailthru-horizon.php */
+	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] && apply_filters( 'sailthru_concierge_on', true ) ) {
 
 		add_settings_field(
 			'sailthru_concierge_from',
@@ -646,7 +647,8 @@ function sailthru_intialize_scout_options() {
 	 */
 	$scout = get_option( 'sailthru_scout_options' );
 
-	if ( isset( $scout['sailthru_scout_is_on'] ) &&  $scout['sailthru_scout_is_on'] ) {
+	/** This filter is documented in class-sailthru-scout.php */
+	if ( isset( $scout['sailthru_scout_is_on'] ) &&  $scout['sailthru_scout_is_on'] && apply_filters( 'sailthru_scout_on', true ) ) {
 
 		add_settings_field(
 			'sailthru_scout_numVisible',

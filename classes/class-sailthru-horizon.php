@@ -209,6 +209,12 @@ class Sailthru_Horizon {
 	 function sailthru_client_horizon() {
 
 	 	// Is horizon turned off?
+
+ 		/**
+		 * Filter the Sailthru Horizon content tags.
+		 *
+		 * @param bool $status True if Horizon is turned on.
+		 */
 	 	if ( ! apply_filters( 'sailthru_horizon_on', true ) ) {
 	 		return;
 	 	}
@@ -250,6 +256,12 @@ class Sailthru_Horizon {
  		// Setup our concierge output values.
 
 	 	// Check if concierge is on.
+
+	 	 /**
+		 * Filter the Sailthru Concierge status.
+		 *
+		 * @param bool $status True if Concierge is turned on.
+		 */
 	 	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 && apply_filters( 'sailthru_concierge_on', true ) ) {
 	 		$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
 	 			from: '" . esc_js( $concierge_from ) . "',
