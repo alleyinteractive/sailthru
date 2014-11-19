@@ -244,17 +244,33 @@ class Sailthru_Horizon {
 
 
 	 	// Check if concierge is on.
+ 		$with_concierge = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
+ 			from: '" . esc_js( $concierge_from ) . "',
+ 			" . esc_js( $concierge_threshold ) . "
+ 			delay: " . esc_js( $concierge_delay ) . ",
+ 			offsetBottom: " . esc_js( $concierge_offset ) . ",
+ 			cssPath: '" . esc_js( $concierge_css ) . "',
+ 			$concierge_filter
+ 		}";
+		$without_concierge = "domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "'";
+
 	 	if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] == 1 ) {
-	 		$horizon_params = "domain: '" . $options['sailthru_horizon_domain'] . "',concierge: {
-	 			from: '" . esc_js( $concierge_from ) . "',
-	 			" . esc_js( $concierge_threshold ) . "
-	 			delay: " . esc_js( $concierge_delay ) . ",
-	 			offsetBottom: " . esc_js( $concierge_offset ) . ",
-	 			cssPath: '" . esc_js( $concierge_css ) . "',
-	 			$concierge_filter
-	 		}";
+			$horizon_params = $with_concierge;
+
+			if ( ! empty( $concierge['sailthru_concierge_restrict_types'] ) ) {
+	 			$types = explode( ',', $concierge['sailthru_concierge_restrict_types'] );
+	 			$types = array_map( 'trim', $types );
+	 			apply_filters( 'sailthru_concierge_restrict_types', $types );
+
+	 			if ( in_array( get_post_type(), $types ) ) {
+	 				$horizon_params = $with_concierge;
+	 			} else {
+	 				$horizon_params = $without_concierge;
+	 			}
+	 		}
+
 		} else {
-			$horizon_params = "domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "'";
+			$horizon_params = $without_concierge;
 		}
 
 		if ( $options['sailthru_horizon_load_type'] == '1') {
@@ -270,7 +286,7 @@ class Sailthru_Horizon {
 			$horizon_js .= "});\n";
 			$horizon_js .= " </script>\n";
 		} else {
-			$horizon_js  = "<!-- Sailthru Horizon  Async-->\n";
+			$horizon_js  = "<!-- Sailthru Horizon Async-->\n";
 			$horizon_js .= "<script type=\"text/javascript\">\n";
 			$horizon_js .= "(function() {\n";
 			$horizon_js .= "     function loadHorizon() {\n";
