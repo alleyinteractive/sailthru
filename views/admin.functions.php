@@ -679,6 +679,20 @@ function sailthru_intialize_scout_options() {
 		);
 
 		add_settings_field(
+			'sailthru_scout_filter',
+			__( 'The tags to filter content by, pass comma separated tags', 'sailthru-for-wordpress' ),
+			'sailthru_scout_filter_callback',
+			'sailthru_scout_options',
+			'sailthru_scout_settings_section',
+			array(
+				'sailthru_scout_options',
+				'sailthru_scout_filter',
+				'10',
+				'sailthru_scout_filter',
+			)
+		);
+
+		add_settings_field(
 			'sailthru_scout_renderItem',
 			__( 'Override rendering function? (Please do not include &lt;p&gt;&lt;/p&gt; tags -- <a href="http://docs.sailthru.com/documentation/products/scout" target="_blank">details here</a>.)', 'sailthru-for-wordpress' ),
 			'sailthru_scout_renderItem_callback',
@@ -822,6 +836,19 @@ function sailthru_scout_includeConsumed_callback( $args ) {
 
 }
 
+/**
+ * Creates a text field for the filter options.
+ */
+function sailthru_scout_filter_callback( $args ) {
+
+	$scout = get_option( 'sailthru_scout_options' );
+	$saved_value = isset( $scout['sailthru_scout_filter'] )  ? $scout['sailthru_scout_filter'] : '' ;
+
+	$html = '<input name="sailthru_scout_options[sailthru_scout_filter]" value="' . esc_attr( $saved_value ) . '">';
+
+	echo $html;
+
+}
 
 /**
  * Just a textbox, but not a general function because we don't (oddly) strip

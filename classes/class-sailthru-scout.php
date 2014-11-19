@@ -83,42 +83,53 @@ class Sailthru_Scout_Widget extends WP_Widget {
 	 	$options        = get_option( 'sailthru_setup_options' );
 		$horizon_domain = $options['sailthru_horizon_domain'];
 		$scout          = get_option( 'sailthru_scout_options' );
+		$concierge      = get_option( 'sailthru_concierge_options' );
 		$scout_params   = array();
 
 		// inlcudeConsumed?
-		if ( isset( $scout['sailthru_scout_includeConsumed'] ) ) {
-			$scout_params[] = strlen( $scout['sailthru_scout_includeConsumed'] ) > 0 ?  'includeConsumed: ' . (bool) $scout['sailthru_scout_includeConsumed'] . '' : '';
-		} else {
-			$scout['sailthru_scout_includeConsumed'] = '';
+		if ( isset( $scout['sailthru_scout_includeConsumed'] ) && strlen( $scout['sailthru_scout_includeConsumed'] ) > 0 ) {
+			$scout_params[] = "includeConsumed: " . (bool) $scout['sailthru_scout_includeConsumed'];
 		}
 
 		// renderItem?
-		if( isset( $scout['sailthru_scout_renderItem'] ) ) {
-			$scout_params[] = strlen( $scout['sailthru_scout_renderItem'] ) > 0 ?  "renderItem: " . (bool) $scout['sailthru_scout_renderItem'] . "": '';
-		} else {
-			$scout['sailthru_scout_renderItem'] = '';
+		if ( isset( $scout['sailthru_scout_renderItem'] ) && strlen( $scout['sailthru_scout_renderItem'] ) > 0 ) {
+			$scout_params[] = "renderItem: " . (bool) $scout['sailthru_scout_renderItem'];
 		}
 
-		if( isset( $scout['scout_num_visible'] ) ) {
-			$scout_params[] = strlen( $scout['scout_num_visible'] ) > 0 ?  "numVisible:'" . esc_js( $scout['sailthru_scout_number'] ) . "' " : '';
-		} else {
-			$scout['scout_num_visible'] = '';
+		// numVisible?
+		if ( isset( $scout['sailthru_scout_numVisible'] ) && strlen( $scout['sailthru_scout_numVisible'] ) > 0  ) {
+			$scout_params[] = "numVisible: " . (int) $scout['sailthru_scout_numVisible'];
+		}
+
+		// pageView?
+		if ( isset( $concierge['sailthru_concierge_is_on'] ) && $concierge['sailthru_concierge_is_on'] ) {
+			$scout_params[] = "noPageview: true";
 		}
 
 		if ( $scout['sailthru_scout_is_on'] == 1 ) {
 			echo "<script type=\"text/javascript\" src=\"//ak.sail-horizon.com/scout/v1.js\"></script>";
 		 	echo "<script type=\"text/javascript\">\n";
-	        echo "SailthruScout.setup({\n";
-	        echo "domain: '". esc_js( $options['sailthru_horizon_domain'] )."',\n";
-			if( is_array( $scout_params ) ) {
+	        echo "    SailthruScout.setup( {\n";
+	        echo "        domain: '" . esc_js( $options['sailthru_horizon_domain'] ) . "',\n";
+			if ( is_array( $scout_params ) ) {
 				foreach ( $scout_params as $key => $val ) {
 					if ( strlen( $val ) > 0 )  {
-						echo esc_js( $val ) . ",\n";
+						echo "        " . esc_js( $val ) . ",\n";
 					}
 				}
 			}
-	        echo "});\n";
-		    echo " if(SailthruScout.allContent.length == 0) { jQuery('#sailthru-scout').hide() }";
+			if ( ! empty( $scout['sailthru_scout_filter'] ) ) {
+				if ( false === strpos( $scout['sailthru_scout_filter'], ',' ) ) {
+					// There is only one tag.
+					echo "        filter: {tags:'" . esc_js( $scout['sailthru_scout_filter'] ) . "'},\n";
+				} else {
+					// There are mulitple tags
+					$tags = explode( ",", $scout['sailthru_scout_filter'] );
+					$tags = array_map( 'trim', $tags );
+					echo "        filter: {tags: ['" . implode( "','", $tags ) . "']},\n";
+				}
+			}
+	        echo "    } );\n";
 		    echo "</script>\n";
 		}
 
