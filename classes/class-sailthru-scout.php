@@ -28,7 +28,7 @@ class Sailthru_Scout_Widget extends WP_Widget {
 			)
 		);
 
-	} // end constructor
+	} // end constructor.
 
 
 	/*--------------------------------------------------*/
@@ -222,7 +222,7 @@ class Sailthru_Scout_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 
-		// Default values for a widget instance
+		// Default values for a widget instance.
         $instance = wp_parse_args(
         	(array) $instance, array(
                 'title' => ''
