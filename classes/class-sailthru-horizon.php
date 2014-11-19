@@ -248,7 +248,7 @@ class Sailthru_Horizon {
  		if ( ! isset( $concierge['sailthru_concierge_filter'] ) ) {
  			$concierge_filter = '';
  		} else {
- 			//Remove whitespace around the commas.
+ 			// Remove whitespace around the commas.
  			$tags_filtered    = preg_replace( "/\s*([\,])\s*/", "$1", $concierge['sailthru_concierge_filter'] );
  			$concierge_filter = strlen( $concierge['sailthru_concierge_filter'] ) >  0 ? "filter: {tags: '" . esc_js( $tags_filtered ) . "'}" : '';
  		}
